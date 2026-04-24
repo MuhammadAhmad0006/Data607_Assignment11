@@ -1,0 +1,15 @@
+---
+title: "M.A._Data607_Assignment11"
+author: "Muhammad Ahmad"
+format: html
+editor: visual
+---
+
+### Approach
+
+  I choose to use a package that already exist to do content-based filtering.
+The package I am using is the recommenderlab package authored by Michael Hahsler. I would like my algorithm to recommend the top 5 items based off different customer buyer history. I will test my algorithm using rank based metrics to see how accurate its based off the data. Some rank based metrics I will use include Precision, Recall, and F1-scores. 
+
+### Challenges
+
+  The challenges I think of now is if the data is missing information to make accurate recommendations and how to tackle that. The first fix I can think of is to recommend items that may be popular in the customers area. I am also worried that the system might overspecialize certain items based on a customers data. I experience this problem from my customer end application like YouTube when I only get recommended videos that I may have watch a lot of recently but got sick of. Using weights or some other method of random item generation recommendations may help diversify item recommendation. 
