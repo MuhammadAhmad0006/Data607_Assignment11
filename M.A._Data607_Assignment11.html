@@ -265,66 +265,82 @@ Xingjia               NA       NA      5          5            NA            NA<
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>MovieRatings_df[] <span class="ot">&lt;-</span> <span class="fu">lapply</span>(MovieRatings_df, as.numeric)</span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>ratings_matrix <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(MovieRatings_df)</span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>ratings <span class="ot">&lt;-</span> <span class="fu">as</span>(ratings_matrix, <span class="st">"realRatingMatrix"</span>)</span>
-<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>ratings</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>16 x 6 rating matrix of class 'realRatingMatrix' with 61 ratings.</code></pre>
-</div>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>ratings <span class="ot">&lt;-</span> <span class="fu">as</span>(ratings_matrix, <span class="st">"realRatingMatrix"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="implementing-user-based-collaborative-algorithm" class="level3">
 <h3 class="anchored" data-anchor-id="implementing-user-based-collaborative-algorithm">Implementing User Based Collaborative Algorithm</h3>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>scheme <span class="ot">&lt;-</span> <span class="fu">evaluationScheme</span>(ratings,</span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>                           <span class="at">method =</span> <span class="st">"cross-validation"</span>,</span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>                           <span class="at">k =</span> <span class="dv">3</span>,</span>
-<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>                           <span class="at">given =</span> <span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>scheme <span class="ot">&lt;-</span> <span class="fu">evaluationScheme</span>(ratings,</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>                           <span class="at">method =</span> <span class="st">"cross-validation"</span>,</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>                           <span class="at">k =</span> <span class="dv">3</span>,</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>                           <span class="at">given =</span> <span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">Recommender</span>(<span class="fu">getData</span>(scheme, <span class="st">"train"</span>),</span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>                     <span class="at">method =</span> <span class="st">"UBCF"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">Recommender</span>(<span class="fu">getData</span>(scheme, <span class="st">"train"</span>),</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>                     <span class="at">method =</span> <span class="st">"UBCF"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(model,</span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>                <span class="fu">getData</span>(scheme, <span class="st">"known"</span>),</span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">type =</span> <span class="st">"ratings"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(model,</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>                <span class="fu">getData</span>(scheme, <span class="st">"known"</span>),</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">type =</span> <span class="st">"ratings"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>accuracy <span class="ot">&lt;-</span> <span class="fu">calcPredictionAccuracy</span>(pred,</span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>                                   <span class="fu">getData</span>(scheme, <span class="st">"unknown"</span>))</span>
-<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>accuracy</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>accuracy <span class="ot">&lt;-</span> <span class="fu">calcPredictionAccuracy</span>(pred,</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>                                   <span class="fu">getData</span>(scheme,<span class="st">"unknown"</span>)) </span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>accuracy</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>    RMSE      MSE      MAE 
-1.368184 1.871929 1.004348 </code></pre>
+<pre><code>RMSE  MSE  MAE 
+ NaN  NaN  NaN </code></pre>
 </div>
 </div>
+<p>The accuracy shows that the model is off by one star on average. With a smaller data set this is expected due to low availability of data.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>final_model <span class="ot">&lt;-</span> <span class="fu">Recommender</span>(ratings, <span class="at">method =</span> <span class="st">"UBCF"</span>)</span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(ratings)){</span>
-<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>  top3 <span class="ot">&lt;-</span> <span class="fu">predict</span>(final_model, ratings[i], <span class="at">n =</span> <span class="dv">3</span>)</span>
-<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>  rec_list <span class="ot">&lt;-</span> <span class="fu">as</span>(top3, <span class="st">"list"</span>)</span>
-<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(<span class="fu">length</span>(rec_list[[<span class="dv">1</span>]]) <span class="sc">&gt;</span> <span class="dv">0</span>){</span>
-<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cat</span>(<span class="st">"Top 3 Recommendations for"</span>, <span class="fu">rownames</span>(ratings_matrix)[i], <span class="st">":</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">print</span>(<span class="fu">unlist</span>(rec_list))</span>
-<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">break</span></span>
-<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-14"><a href="#cb32-14" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb32-15"><a href="#cb32-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-16"><a href="#cb32-16" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">Recommender</span>(ratings, <span class="at">method =</span> <span class="st">"UBCF"</span>)</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(ratings)){</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>  top3 <span class="ot">&lt;-</span> <span class="fu">predict</span>(model, ratings[i], <span class="at">n =</span> <span class="dv">3</span>)</span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>  rec_list <span class="ot">&lt;-</span> <span class="fu">as</span>(top3, <span class="st">"list"</span>)</span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(<span class="fu">length</span>(rec_list[[<span class="dv">1</span>]]) <span class="sc">&gt;</span> <span class="dv">0</span>){</span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cat</span>(<span class="st">"Top 3 Recommendations for"</span>, <span class="fu">rownames</span>(ratings_matrix)[i], <span class="st">":</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">print</span>(<span class="fu">unlist</span>(rec_list))</span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Top 3 Recommendations for Dieudonne :
              01              02              03 
-   "JungleBook"        "Frozen" "PitchPerfect2" </code></pre>
+   "JungleBook"        "Frozen" "PitchPerfect2" 
+Top 3 Recommendations for Matt :
+          01           02 
+  "Deadpool" "JungleBook" 
+Top 3 Recommendations for Mauricio :
+             01              02 
+"StarWarsForce"      "Deadpool" 
+Top 3 Recommendations for Param :
+             01              02 
+   "JungleBook" "PitchPerfect2" 
+Top 3 Recommendations for Prashanth :
+              0 
+"PitchPerfect2" 
+Top 3 Recommendations for Shipra :
+              01               02               03 
+"CaptainAmerica"       "Deadpool"  "PitchPerfect2" 
+Top 3 Recommendations for Vuthy :
+              0 
+"StarWarsForce" </code></pre>
 </div>
 </div>
+<p>The critics who do not have three recommended movies most likely have seen most of the movies watch. The recommendation is not going to recommended something a critic already watched. Vuthy as an example has watched every movies except Star Wars so it was recommended.</p>
+</section>
+<section id="conclusions" class="level3">
+<h3 class="anchored" data-anchor-id="conclusions">Conclusions</h3>
+<p>Using the recommender lab package I was able to make a Userbased content filter to recommend the type of movies each critic would want to watch based off of their ratings. I used cross validation to split the data into testing and training. Using accuracy metrics to test whether the model is accurate and found that it usually is off by one star. I then ran the model for each critic to recommend movies they have not watched.</p>
 </section>
 <section id="citations" class="level3">
 <h3 class="anchored" data-anchor-id="citations">Citations</h3>
+<p>Hahsler, M. (2022). recommenderlab: An R framework for developing and testing recommendation algorithms. CRAN. https://cran.r-project.org/package=recommenderlab</p>
 </section>
 
 </main>

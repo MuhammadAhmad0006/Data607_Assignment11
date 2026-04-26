@@ -48,11 +48,11 @@ MovieRatings_df
 MovieRatings_df[] <- lapply(MovieRatings_df, as.numeric)
 ratings_matrix <- as.matrix(MovieRatings_df)
 ratings <- as(ratings_matrix, "realRatingMatrix")
-ratings
 ```
 
 
 ### Implementing User Based Collaborative Algorithm
+
 
 ```{r}
 scheme <- evaluationScheme(ratings,
@@ -74,32 +74,33 @@ pred <- predict(model,
 
 ```{r}
 accuracy <- calcPredictionAccuracy(pred,
-                                   getData(scheme, "unknown"))
-
+                                   getData(scheme,"unknown")) 
 accuracy
 
 ```
+The accuracy shows that the model is off by one star on average. With a smaller data set this is expected due to low availability of data.
 
 ```{r}
-final_model <- Recommender(ratings, method = "UBCF")
+model <- Recommender(ratings, method = "UBCF")
 
 for(i in 1:nrow(ratings)){
 
-  top3 <- predict(final_model, ratings[i], n = 3)
+  top3 <- predict(model, ratings[i], n = 3)
   rec_list <- as(top3, "list")
 
   if(length(rec_list[[1]]) > 0){
-
     cat("Top 3 Recommendations for", rownames(ratings_matrix)[i], ":\n")
     print(unlist(rec_list))
-    break
-
   }
-
 }
-
 ```
+The critics who do not have three recommended movies most likely have seen most of the movies watch. The recommendation is not going to recommended something a critic already watched. Vuthy as an example has watched every movies except Star Wars so it was recommended. 
 
+### Conclusions 
+
+  Using the recommender lab package I was able to make a Userbased content filter to
+recommend the type of movies each critic would want to watch based off of their ratings. I used cross validation to split the data into testing and training. Using accuracy metrics to test whether the model is accurate and found that it usually is off by one star. I then ran the model for each critic to recommend movies they have not watched. 
 
 ### Citations 
 
+Hahsler, M. (2022). recommenderlab: An R framework for developing and testing recommendation algorithms. CRAN. https://cran.r-project.org/package=recommenderlab
