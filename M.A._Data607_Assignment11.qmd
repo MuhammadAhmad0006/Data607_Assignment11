@@ -13,3 +13,93 @@ The package I am using is the recommenderlab package authored by Michael Hahsler
 ### Challenges
 
   The challenges I think of now is if the data is missing information to make accurate recommendations and how to tackle that. The first fix I can think of is to recommend items that may be popular in the customers area. I am also worried that the system might overspecialize certain items based on a customers data. I experience this problem from my customer end application like YouTube when I only get recommended videos that I may have watch a lot of recently but got sick of. Using weights or some other method of random item generation recommendations may help diversify item recommendation. 
+
+
+### Libraries
+```{r}
+library(dplyr)
+library(recommenderlab)
+library(tidyverse)
+library(tidyr)
+library(readxl)
+library(caret)
+```
+### Dataset 
+
+```{r}
+url <- "https://raw.githubusercontent.com/MuhammadAhmad0006/Data607_Assignment11/refs/heads/main/MovieRatings.csv"
+
+
+MovieRatingsRAW <- read.csv(url)
+head(MovieRatingsRAW)
+```
+
+
+After reviewing this data set I believe the best personalized recommendation algorithm is user to user collaborative filtering. This is because of the focus of user rating input. 
+
+```{r}
+MovieRatings_df <- as.data.frame(MovieRatingsRAW)
+row.names(MovieRatings_df) <- MovieRatings_df[,1]
+MovieRatings_df <- MovieRatings_df[,-1]
+MovieRatings_df
+```
+
+```{r}
+MovieRatings_df[] <- lapply(MovieRatings_df, as.numeric)
+ratings_matrix <- as.matrix(MovieRatings_df)
+ratings <- as(ratings_matrix, "realRatingMatrix")
+ratings
+```
+
+
+### Implementing User Based Collaborative Algorithm
+
+```{r}
+scheme <- evaluationScheme(ratings,
+                           method = "cross-validation",
+                           k = 3,
+                           given = 1)
+```
+
+```{r}
+model <- Recommender(getData(scheme, "train"),
+                     method = "UBCF")
+```
+
+```{r}
+pred <- predict(model,
+                getData(scheme, "known"),
+                type = "ratings")
+```
+
+```{r}
+accuracy <- calcPredictionAccuracy(pred,
+                                   getData(scheme, "unknown"))
+
+accuracy
+
+```
+
+```{r}
+final_model <- Recommender(ratings, method = "UBCF")
+
+for(i in 1:nrow(ratings)){
+
+  top3 <- predict(final_model, ratings[i], n = 3)
+  rec_list <- as(top3, "list")
+
+  if(length(rec_list[[1]]) > 0){
+
+    cat("Top 3 Recommendations for", rownames(ratings_matrix)[i], ":\n")
+    print(unlist(rec_list))
+    break
+
+  }
+
+}
+
+```
+
+
+### Citations 
+
